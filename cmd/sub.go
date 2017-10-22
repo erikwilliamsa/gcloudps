@@ -19,14 +19,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var subName string
+
 // subCmd represents the sub command
 var subCmd = &cobra.Command{
 	Use:   "sub",
 	Short: "Subscribe to a given subscription/topic",
+	// Args: func(cmd *cobra.Command, args []string) error {
+	// 	return validateRequired()
+	// },
 	Long: `
 	Creates a subscriber that will continue to recieve messages while running.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("sub called")
+		fmt.Println("sub called" + subName)
+		fmt.Println("Project " + ProjectName)
 	},
 }
 
@@ -38,7 +44,7 @@ func init() {
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// subCmd.PersistentFlags().String("foo", "", "A help for foo")
-	subCmd.Flags().StringP("subname", "s", "", "Name of the subscription to use")
+	subCmd.Flags().StringVarP(&subName, "subname", "s", "", "Name of the subscription to use")
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// subCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")

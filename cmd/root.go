@@ -22,7 +22,11 @@ import (
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
+var (
+	cfgFile     string
+	ProjectName string
+	TopicName   string
+)
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
@@ -51,8 +55,8 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	RootCmd.PersistentFlags().StringP("project", "p", "", "The Google cloud project where the client needs to connect")
-	RootCmd.PersistentFlags().StringP("topic", "t", "", "Topic for the client to use in the publish or subscribe.")
+	RootCmd.PersistentFlags().StringVarP(&ProjectName, "project", "p", "", "The Google cloud project where the client needs to connect")
+	RootCmd.PersistentFlags().StringVarP(&TopicName, "topic", "t", "", "Topic for the client to use in the publish or subscribe.")
 }
 
 // initConfig reads in config file and ENV variables if set.
