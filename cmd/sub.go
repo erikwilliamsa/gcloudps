@@ -25,9 +25,11 @@ var subName string
 var subCmd = &cobra.Command{
 	Use:   "sub",
 	Short: "Subscribe to a given subscription/topic",
-	// Args: func(cmd *cobra.Command, args []string) error {
-	// 	return validateRequired()
-	// },
+	Args: func(cmd *cobra.Command, args []string) error {
+		flags := make(map[string]string)
+		flags["subname"] = subName
+		return CheckRequiredFlags(flags)
+	},
 	Long: `
 	Creates a subscriber that will continue to recieve messages while running.`,
 	Run: func(cmd *cobra.Command, args []string) {
