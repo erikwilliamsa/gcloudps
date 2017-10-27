@@ -1,10 +1,8 @@
 package workers_test
 
 import (
-	"time"
-
 	"cloud.google.com/go/pubsub"
-	. "github.com/erikwilliamsa/gcloudps/workers"
+	"github.com/erikwilliamsa/gcloudps/workers"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -12,30 +10,32 @@ import (
 
 var callct = 0
 
-type MockSubscriberClient struct{}
-
-func (msc *MockSubscriberClient) Receive() pubsub.Message {
-	callct++
-	var b []byte
-	return pubsub.Message{Data: b}
+type MockSubscriberClient struct {
+	ReturnNil bool
 }
 
-var _ = Describe("Subscriber #ConsumeCount", func() {
-	Context("When consume count is called", func() {
+var _ = Describe("CountMessageHandler #OnMessage", func() {
+	Context("When OnMessage  is called", func() {
 		It("Should consume until toggled off and return the number of messages consumed", func() {
-			mc := &MockSubscriberClient{}
-			toggle := make(chan struct{})
-			c1 := make(chan int)
+			cmh := workers.NewCountMessageHandler()
+			cmh.AutoAck = false
+			cmh.OnMessage(&pubsub.Message{Data: []byte("message")})
+			Expect(cmh.Count).To(Equal(1))
 
-			go func() {
-				c1 <- ConsumeCount(toggle, mc)
-			}()
-			time.Sleep(time.Millisecond * 1) // Make sure it can go at least 1 iteration.
-			close(toggle)
-			count := <-c1
+		})
+	})
 
-			Expect(count).ToNot(Equal(0))
-			Expect(count).To(Equal(callct))
+	Context("When OnMessage  is called 1000 times", func() {
+		It("Should consume until toggled off and return the number of messages consumed", func() {
+			cmh := workers.NewCountMessageHandler()
+			cmh.AutoAck = false
+
+			for i := 1; i <= 1000; i++ {
+				cmh.OnMessage(&pubsub.Message{Data: []byte("message")})
+
+			}
+			Expect(cmh.Count).To(Equal(1000))
+
 		})
 	})
 })

@@ -1,4 +1,4 @@
-// Copyright © 2017 NAME HERE <EMAIL ADDRESS>
+// Copyright © 2017 Erik Williams erikwilliamsa@gmail.com
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,9 +23,11 @@ import (
 )
 
 var (
-	cfgFile     string
+	cfgFile string
+	// ProjectName Name of the GCP Project
 	ProjectName string
-	TopicName   string
+	// TopicName Name of the Topic to be used during execution
+	TopicName string
 )
 
 // RootCmd represents the base command when called without any subcommands
@@ -39,6 +41,7 @@ var RootCmd = &cobra.Command{
 // Execute adds all child commands to the root command sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+
 	if err := RootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -57,6 +60,7 @@ func init() {
 	// when this action is called directly.
 	RootCmd.PersistentFlags().StringVarP(&ProjectName, "project", "p", "", "The Google cloud project where the client needs to connect")
 	RootCmd.PersistentFlags().StringVarP(&TopicName, "topic", "t", "", "Topic for the client to use in the publish or subscribe.")
+
 }
 
 // initConfig reads in config file and ENV variables if set.
