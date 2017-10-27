@@ -1,8 +1,8 @@
-#gcloudps
+# gcloudps
 
 Google Cloud Pub/Sub CLI Utility.
 
-Subscribes and counts the number of messages.
+## Subscribes and counts the number of messages.
 
 Install from source:
 
@@ -15,3 +15,4 @@ Usage:
 * `gcloudps sub -p <gcp project name> -t <topicname>  -s <subscriptionname>` 
 
 **Note:** Current version Auto deletes subscriptions and Auto-acks messages
+Google Cloud Pub/Sub CLI Utility
