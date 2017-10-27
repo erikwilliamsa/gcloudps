@@ -6,7 +6,7 @@ Subscribes and counts the number of messages.
 
 Install from source:
 
-`go get install github.com/erikwilliamsa/gcloudps`
+`go get github.com/erikwilliamsa/gcloudps`
 
 
 Usage:
