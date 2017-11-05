@@ -14,8 +14,12 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"os"
+
+	ps "cloud.google.com/go/pubsub"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -87,4 +91,13 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
+}
+
+func initClient() (context.Context, *ps.Client, *ps.Topic) {
+	ctx := context.Background()
+	client, err := ps.NewClient(ctx, ProjectName)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return ctx, client, client.Topic(TopicName)
 }

@@ -16,7 +16,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 	"os/signal"
 
@@ -44,12 +43,7 @@ var subCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Using project " + ProjectName)
 
-		ctx := context.Background()
-		client, err := pubsub.NewClient(ctx, ProjectName)
-		if err != nil {
-			log.Println(err)
-		}
-		topic := client.Topic(TopicName)
+		ctx, client, topic := initClient()
 
 		fmt.Println("Creating subscription " + subName)
 		subscription, err := client.CreateSubscription(ctx, subName,
@@ -76,11 +70,14 @@ func cleanup(ctx context.Context, s *pubsub.Subscription) {
 	go func() {
 		for sig := range c {
 			if sig != nil {
-				fmt.Println("Exiting")
+				fmt.Println("\nExiting")
 				fmt.Println("Deleting the subscribtions")
+				ctx.Done()
 				err := s.Delete(ctx)
 				if err != nil {
-					fmt.Println(err)
+					fmt.Println("Topic was not deleted: " + err.Error())
+				} else {
+					fmt.Println("Topic deleted")
 				}
 
 			}
@@ -91,15 +88,6 @@ func cleanup(ctx context.Context, s *pubsub.Subscription) {
 }
 func init() {
 	RootCmd.AddCommand(subCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// subCmd.PersistentFlags().String("foo", "", "A help for foo")
 	subCmd.Flags().StringVarP(&subName, "subname", "s", "", "Name of the subscription to use")
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// subCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 }

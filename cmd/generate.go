@@ -16,39 +16,34 @@ package cmd
 import (
 	"fmt"
 
-	ps "cloud.google.com/go/pubsub"
 	"github.com/spf13/cobra"
 )
 
-var message string
+// generateCmd represents the generate command
+var generateCmd = &cobra.Command{
+	Use:   "generate",
+	Short: "A brief description of your command",
+	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
 
-// pubCmd represents the pub command
-var pubCmd = &cobra.Command{
-	Use:   "pub",
-	Short: "Publish Messages to a Topic",
-	Args: func(cmd *cobra.Command, args []string) error {
-		flags := make(map[string]string)
-		flags["message"] = message
-		return CheckRequiredFlags(flags)
-	},
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Publishing to %s", TopicName)
-		ctx, _, topic := initClient()
-		msg := &ps.Message{Data: []byte(message)}
-		topic.Publish(ctx, msg)
+		fmt.Println("generate called")
 	},
 }
 
 func init() {
-	RootCmd.AddCommand(pubCmd)
+	pubcmd.AddCommand(generateCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
+	// generateCmd.PersistentFlags().String("foo", "", "A help for foo")
 
-	pubCmd.Flags().StringVarP(&message, "messageData", "md", "", "Message to be sent")
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// pubCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// generateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
