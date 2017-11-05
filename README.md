@@ -1,12 +1,12 @@
 # gcloudps
 
-Google Cloud Pub/Sub CLI Utility.
+## Google Cloud Pub/Sub CLI Utility.
 
-## Subscribes and counts the number of messages.
+Subscribes and counts the number of messages.
 
 Install from source:
 
-`go get install github.com/erikwilliamsa/gcloudps`
+`go get github.com/erikwilliamsa/gcloudps`
 
 
 Usage:
