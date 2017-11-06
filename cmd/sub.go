@@ -16,8 +16,10 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"os/signal"
+	"strings"
 
 	"cloud.google.com/go/pubsub"
 	ps "github.com/erikwilliamsa/gcloudps/pubsub"
@@ -49,14 +51,18 @@ var subCmd = &cobra.Command{
 		subscription, err := client.CreateSubscription(ctx, subName,
 			pubsub.SubscriptionConfig{Topic: topic})
 		if err != nil {
+			if strings.Contains(err.Error(), "Resource not found") {
+				log.Fatal(err.Error())
+			} else {
+				fmt.Println(subName + " already created" + err.Error())
+			}
 
-			fmt.Println(subName + " already created")
 		}
 
 		cleanup(ctx, subscription)
 
 		sc := ps.NewSubscriberClient(ctx, subscription, workers.NewCountMessageHandler())
-
+		fmt.Printf("\rConsumed:  %d", 0)
 		workers.Subscribe(ctx, sc)
 
 	},
@@ -67,17 +73,17 @@ func cleanup(ctx context.Context, s *pubsub.Subscription) {
 	// in its own method to be used elsewhere
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
+	fmt.Println("Press Ctrl+c to exit")
 	go func() {
 		for sig := range c {
 			if sig != nil {
 				fmt.Println("\nExiting")
-				fmt.Println("Deleting the subscribtions")
-				ctx.Done()
+				fmt.Println("Deleting the subscribtion")
 				err := s.Delete(ctx)
 				if err != nil {
-					fmt.Println("Topic was not deleted: " + err.Error())
+					fmt.Println("Subscribtion was not deleted: " + err.Error())
 				} else {
-					fmt.Println("Topic deleted")
+					fmt.Println("Subscribtion deleted")
 				}
 
 			}
