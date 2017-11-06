@@ -16,34 +16,34 @@ package cmd
 import (
 	"fmt"
 
+	pubsub "github.com/erikwilliamsa/gcloudps/pubsub"
+	"github.com/erikwilliamsa/gcloudps/workers"
 	"github.com/spf13/cobra"
 )
+
+var generateCount int
 
 // generateCmd represents the generate command
 var generateCmd = &cobra.Command{
 	Use:   "generate",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Generate a number of generic messages and publisht them to the given topic.",
+	Args: func(cmd *cobra.Command, args []string) error {
+		flags := make(map[string]string)
+		flags["count"] = string(generateCount)
+		return CheckRequiredFlags(flags)
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("generate called")
+		ctx, _, topic := initClient()
+		pc := &pubsub.PublishClient{Context: ctx, Topic: topic, Batch: false}
+		pw := workers.PublisheWorker{Publish: pc}
+		pw.GenerateMessages(generateCount)
+
 	},
 }
 
 func init() {
-	pubcmd.AddCommand(generateCmd)
+	pubCmd.AddCommand(generateCmd)
+	generateCmd.Flags().IntVarP(&generateCount, "count", "c", 0, "The number of messages to generate and publish.")
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// generateCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// generateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

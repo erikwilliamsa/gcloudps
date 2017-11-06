@@ -47,7 +47,7 @@ func init() {
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 
-	pubCmd.Flags().StringVarP(&message, "messageData", "md", "", "Message to be sent")
+	pubCmd.Flags().StringVarP(&message, "messageData", "m", "", "Message to be sent")
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// pubCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")

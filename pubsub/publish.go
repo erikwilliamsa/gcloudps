@@ -15,7 +15,7 @@ type Publish interface {
 // PublishClient settings for the Publisher
 type PublishClient struct {
 	Context context.Context
-	Topic   ps.Topic
+	Topic   *ps.Topic
 	Batch   bool
 }
 
@@ -25,7 +25,7 @@ func (pc *PublishClient) Publish(message *ps.Message) {
 	if !pc.Batch {
 		_, err := r.Get(pc.Context)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Printf("Error while publishing! %s ", err)
 		}
 	}
 
