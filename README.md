@@ -21,6 +21,7 @@ Install from source:
 Google Cloud Pub/Sub CLI Utility
 
 **Publishing** 
+
 Publish a single customm message: 
 
 `gcloudps pub -p <gcp project name> -t <topicname>  -m "my message!" ` 
