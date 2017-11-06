@@ -15,6 +15,6 @@ var versionCmd = &cobra.Command{
 	Short: "Google Cloud Pub/Sub Client",
 	Long:  `Google Cloud Pub/Sub Client`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("0.2.0")
+		fmt.Println("0.2.1")
 	},
 }
