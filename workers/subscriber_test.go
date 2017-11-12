@@ -14,6 +14,15 @@ type MockSubscriberClient struct {
 	ReturnNil bool
 }
 
+type MockFormatter struct {
+	called bool
+}
+
+func (mf *MockFormatter) Format(data string) string {
+	mf.called = true
+	return data
+}
+
 var _ = Describe("CountMessageHandler #OnMessage", func() {
 	Context("When OnMessage  is called", func() {
 		It("Should consume until toggled off and return the number of messages consumed", func() {
@@ -34,8 +43,24 @@ var _ = Describe("CountMessageHandler #OnMessage", func() {
 				cmh.OnMessage(&pubsub.Message{Data: []byte("message")})
 
 			}
+
 			Expect(cmh.Count).To(Equal(1000))
 
+		})
+	})
+
+	Context("When preview is true and OnMessage is called", func() {
+		It("Should call the formatter with the data", func() {
+			mf := MockFormatter{}
+
+			cmh := workers.NewCountMessageHandler()
+			cmh.AutoAck = false
+
+			cmh.Preview = true
+			cmh.Formatter = &mf
+			cmh.OnMessage(&pubsub.Message{Data: []byte("message")})
+
+			Expect(mf.called).To(Equal(true))
 		})
 	})
 })

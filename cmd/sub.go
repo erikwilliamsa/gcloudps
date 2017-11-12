@@ -21,6 +21,8 @@ import (
 	"os/signal"
 	"strings"
 
+	"github.com/erikwilliamsa/gcloudps/formatters"
+
 	"cloud.google.com/go/pubsub"
 	ps "github.com/erikwilliamsa/gcloudps/pubsub"
 	"github.com/erikwilliamsa/gcloudps/workers"
@@ -30,6 +32,7 @@ import (
 var (
 	subName       string
 	dontdeletesub = false
+	preview       = false
 )
 
 // subCmd represents the sub command
@@ -61,9 +64,14 @@ var subCmd = &cobra.Command{
 		}
 
 		cleanup(ctx, subscription)
+		mch := workers.NewCountMessageHandler()
 
-		sc := ps.NewSubscriberClient(ctx, subscription, workers.NewCountMessageHandler())
-		fmt.Printf("\rConsumed:  %d", 0)
+		if preview {
+			mch.Preview = true
+			mch.Formatter = &formatters.JSONFormatter{}
+		}
+		sc := ps.NewSubscriberClient(ctx, subscription, mch)
+
 		workers.Subscribe(ctx, sc)
 
 	},
@@ -108,5 +116,7 @@ func deleteSub(ctx context.Context, s *pubsub.Subscription) {
 func init() {
 	RootCmd.AddCommand(subCmd)
 	subCmd.Flags().StringVarP(&subName, "subname", "s", "", "Name of the subscription to use")
-	subCmd.Flags().BoolVar(&dontdeletesub, "no-delete", false, "Prevet deleting the subcription on exit.")
+	subCmd.Flags().BoolVar(&dontdeletesub, "no-delete", false, "Prevent deleting the subcription on exit.")
+	subCmd.Flags().BoolVar(&preview, "preview", false, "Preview deleting the subcription on exit.")
+
 }
