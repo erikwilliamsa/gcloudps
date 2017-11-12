@@ -2,7 +2,7 @@
 
 ## Google Cloud Pub/Sub CLI Utility.
 
-Subscribes and counts the number of messages.
+Publish and subscribe to Google Cloud Pub/Sub from the CLI.
 
 Install from source:
 
@@ -17,8 +17,7 @@ Install from source:
 
 * `gcloudps sub -p <gcp project name> -t <topicname>  -s <subscriptionname>` 
 
-> **Note:** Current version Auto deletes subscriptions and Auto-acks messages
-Google Cloud Pub/Sub CLI Utility
+> **Note:** If you do not want to delete your subscritpion, use the --no-delete flag.
 
 **Publishing** 
 

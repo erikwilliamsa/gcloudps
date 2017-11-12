@@ -27,9 +27,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var subName string
-
-var deletesub = true
+var (
+	subName       string
+	dontdeletesub = false
+)
 
 // subCmd represents the sub command
 var subCmd = &cobra.Command{
@@ -79,11 +80,14 @@ func cleanup(ctx context.Context, s *pubsub.Subscription) {
 			if sig != nil {
 				fmt.Println("\nExiting")
 				fmt.Println("Deleting the subscribtion")
-				err := s.Delete(ctx)
-				if err != nil {
-					fmt.Println("Subscribtion was not deleted: " + err.Error())
+				if !dontdeletesub {
+					deleteSub(ctx, s)
+					os.Exit(0)
 				} else {
-					fmt.Println("Subscribtion deleted")
+
+					fmt.Println("Not deleting the subscription. The subscription will continue to receive messages.")
+
+					os.Exit(0)
 				}
 
 			}
@@ -92,8 +96,17 @@ func cleanup(ctx context.Context, s *pubsub.Subscription) {
 	}()
 
 }
+
+func deleteSub(ctx context.Context, s *pubsub.Subscription) {
+	err := s.Delete(ctx)
+	if err != nil {
+		fmt.Println("Subscribtion was not deleted: " + err.Error())
+	} else {
+		fmt.Println("Subscribtion deleted")
+	}
+}
 func init() {
 	RootCmd.AddCommand(subCmd)
 	subCmd.Flags().StringVarP(&subName, "subname", "s", "", "Name of the subscription to use")
-
+	subCmd.Flags().BoolVar(&dontdeletesub, "no-delete", false, "Prevet deleting the subcription on exit.")
 }
