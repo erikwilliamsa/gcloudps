@@ -21,15 +21,19 @@ import (
 	"os/signal"
 	"strings"
 
+	"github.com/erikwilliamsa/gcloudps/formatters"
+
 	"cloud.google.com/go/pubsub"
 	ps "github.com/erikwilliamsa/gcloudps/pubsub"
 	"github.com/erikwilliamsa/gcloudps/workers"
 	"github.com/spf13/cobra"
 )
 
-var subName string
-
-var deletesub = true
+var (
+	subName       string
+	dontdeletesub = false
+	preview       = false
+)
 
 // subCmd represents the sub command
 var subCmd = &cobra.Command{
@@ -60,9 +64,14 @@ var subCmd = &cobra.Command{
 		}
 
 		cleanup(ctx, subscription)
+		mch := workers.NewCountMessageHandler()
 
-		sc := ps.NewSubscriberClient(ctx, subscription, workers.NewCountMessageHandler())
-		fmt.Printf("\rConsumed:  %d", 0)
+		if preview {
+			mch.Preview = true
+			mch.Formatter = &formatters.JSONFormatter{}
+		}
+		sc := ps.NewSubscriberClient(ctx, subscription, mch)
+
 		workers.Subscribe(ctx, sc)
 
 	},
@@ -79,11 +88,14 @@ func cleanup(ctx context.Context, s *pubsub.Subscription) {
 			if sig != nil {
 				fmt.Println("\nExiting")
 				fmt.Println("Deleting the subscribtion")
-				err := s.Delete(ctx)
-				if err != nil {
-					fmt.Println("Subscribtion was not deleted: " + err.Error())
+				if !dontdeletesub {
+					deleteSub(ctx, s)
+					os.Exit(0)
 				} else {
-					fmt.Println("Subscribtion deleted")
+
+					fmt.Println("Not deleting the subscription. The subscription will continue to receive messages.")
+
+					os.Exit(0)
 				}
 
 			}
@@ -92,8 +104,19 @@ func cleanup(ctx context.Context, s *pubsub.Subscription) {
 	}()
 
 }
+
+func deleteSub(ctx context.Context, s *pubsub.Subscription) {
+	err := s.Delete(ctx)
+	if err != nil {
+		fmt.Println("Subscribtion was not deleted: " + err.Error())
+	} else {
+		fmt.Println("Subscribtion deleted")
+	}
+}
 func init() {
 	RootCmd.AddCommand(subCmd)
 	subCmd.Flags().StringVarP(&subName, "subname", "s", "", "Name of the subscription to use")
+	subCmd.Flags().BoolVar(&dontdeletesub, "no-delete", false, "Prevent deleting the subcription on exit.")
+	subCmd.Flags().BoolVar(&preview, "preview", false, "Preview deleting the subcription on exit.")
 
 }

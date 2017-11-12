@@ -32,10 +32,16 @@ var pubCmd = &cobra.Command{
 		return CheckRequiredFlags(flags)
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Publishing to %s", TopicName)
+		fmt.Printf("Publishing to %s\n", TopicName)
 		ctx, _, topic := initClient()
 		msg := &ps.Message{Data: []byte(message)}
-		topic.Publish(ctx, msg)
+		r := topic.Publish(ctx, msg)
+		id, err := r.Get(ctx)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Println("Sent message with id " + id)
+		}
 	},
 }
 
