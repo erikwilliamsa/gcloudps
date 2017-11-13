@@ -20,6 +20,7 @@ Install from source:
 * `gcloudps sub -p <gcp project name> -t <topicname>  -s <subscriptionname>` 
 
 Other flags: 
+
 | Flag | Description|
 -------|------------|
 | --no-delete | Disables the auto delete of subscriptions on exit |
