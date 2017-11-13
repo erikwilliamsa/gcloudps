@@ -1,6 +1,6 @@
 # gcloudps
 
-![badge](https://godoc.org/github.com/thylong/ian?status.svg)
+![badge](https://godoc.org/github.com/erikwilliamsa/gcloudps?status.svg)
 
 ## Google Cloud Pub/Sub CLI Utility.
 
