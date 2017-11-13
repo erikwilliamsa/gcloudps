@@ -1,5 +1,7 @@
 # gcloudps
 
+![badge](https://godoc.org/github.com/thylong/ian?status.svg)!
+
 ## Google Cloud Pub/Sub CLI Utility.
 
 Publish and subscribe to Google Cloud Pub/Sub from the CLI.
@@ -17,7 +19,13 @@ Install from source:
 
 * `gcloudps sub -p <gcp project name> -t <topicname>  -s <subscriptionname>` 
 
-> **Note:** If you do not want to delete your subscritpion, use the --no-delete flag.
+Other flags: 
+| Flag | Description|
+-------|------------|
+| --no-delete | Disables the auto delete of subscriptions on exit |
+| --preview | Displays each messages data (body).  Will auto format JSON payloads | 
+
+
 
 **Publishing** 
 
