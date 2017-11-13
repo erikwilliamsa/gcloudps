@@ -1,6 +1,6 @@
 # gcloudps
 
-![badge](https://godoc.org/github.com/erikwilliamsa/gcloudps?refrence)
+![badge](https://godoc.org/github.com/erikwilliamsa/gcloudps?status)
 
 ## Google Cloud Pub/Sub CLI Utility.
 
