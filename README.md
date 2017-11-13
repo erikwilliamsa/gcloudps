@@ -1,7 +1,7 @@
 # gcloudps
 
 [![GoDoc](https://godoc.org/github.com/erikwilliamsa/gcloudps?status.svg)](https://godoc.org/github.com/erikwilliamsa/gcloudps)
-![Build](https://travis-ci.org/erikwilliamsa/gcloudps.svg?branch=master)
+[![Build](https://travis-ci.org/erikwilliamsa/gcloudps.svg?branch=master)](https://travis-ci.org/erikwilliamsa/gcloudps)
 
 ## Google Cloud Pub/Sub CLI Utility.
 
