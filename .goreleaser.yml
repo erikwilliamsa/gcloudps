@@ -19,7 +19,7 @@ builds:
   goarm:
   - "6"
   main: .
-  ldflags: -s -w -X github.homedepot.com/cmd/Verison.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
+  ldflags: -s -w -X github.homedepot.com/cmd.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
   binary: gcloudps
 archive:
   format: tar.gz
