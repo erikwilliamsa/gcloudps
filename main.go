@@ -15,6 +15,9 @@ package main
 
 import "github.com/erikwilliamsa/gcloudps/cmd"
 
+var version = "v0.0.0" //Updated by golreaser
+
 func main() {
+	cmd.Version = version
 	cmd.Execute()
 }
