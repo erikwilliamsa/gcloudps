@@ -11,4 +11,4 @@ script:
 # .travis.yml
 after_success:
   - echo "$TRAVIS_TAG"
-  - test -n "$TRAVIS_TAG" && curl -L https://git.io/goreleaser | bash
+  - curl -L https://git.io/goreleaser | bash
