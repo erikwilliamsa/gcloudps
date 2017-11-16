@@ -6,13 +6,14 @@ release:
   name_template: '{{.Tag}}'
 brew:
   commit_author:
-    name: goreleaserbot
-    email: goreleaser@carlosbecker.com
-  install: bin.install "gcloudps"
+    name: Erik Williams
+    email: erikwilliamsa@gmail.com
+  install: bin.install "erikwilliamsa/homebrew-gcloudps/gcloudps"
 builds:
 - goos:
   - linux
   - darwin
+  - windows
   goarch:
   - amd64
   - "386"
