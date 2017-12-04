@@ -38,6 +38,3 @@ Publish a single customm message:
 Generate an publish a number of messages: 
 
 `gcloudps pub generate -c 1000 -p <gcp project name> -t <topicname>` 
-
-
-
