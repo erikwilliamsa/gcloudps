@@ -6,7 +6,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var version = "0.0.0"
+// Version the version of the app
+var Version string
 
 func init() {
 	RootCmd.AddCommand(versionCmd)
@@ -17,6 +18,6 @@ var versionCmd = &cobra.Command{
 	Short: "Google Cloud Pub/Sub Client",
 	Long:  `Google Cloud Pub/Sub Client`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(version)
+		fmt.Println(Version)
 	},
 }
