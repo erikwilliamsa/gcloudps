@@ -14,7 +14,7 @@ Install from source:
 
 ### Usage:
 
-* Log into your Gooogle Cloud project using the gcloud command 
+* Log into your Google Cloud project using the gcloud command 
 
 **Subscribing** 
 
