@@ -4,15 +4,11 @@ release:
     owner: erikwilliamsa
     name: gcloudps
   name_template: '{{.Tag}}'
-brew:
-  commit_author:
-    name: Erik Williams
-    email: erikwilliamsa@gmail.com
-  install: bin.install "erikwilliamsa/homebrew-gcloudps/gcloudps"
 builds:
 - goos:
   - linux
   - darwin
+  - windows
   goarch:
   - amd64
   - "386"
@@ -21,21 +17,7 @@ builds:
   main: .
   ldflags: -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
   binary: gcloudps
-archive:
-  format: tar.gz
-  name_template: '{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{
-    .Arm }}{{ end }}'
-  files:
-  - licence*
-  - LICENCE*
-  - license*
-  - LICENSE*
-  - readme*
-  - README*
-  - changelog*
-  - CHANGELOG*
-fpm:
-  bindir: /usr/local/bin
+
 snapshot:
   name_template: SNAPSHOT-{{ .Commit }}
 checksum:
